@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+  <%- include('header.ejs') %>
+
+  <body>
+
+    <body class="hm-index-body text-center" style="overflow-x: hidden">
+
+    <div class="cover-container d-flex h-100 mx-auto flex-column">
+
+      <%- include('navbar.ejs') %>
+      <div class="hm-container">
+
+          <h1 style="margin-top: 32px;"><%= title %></h1>
+
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#opcionesmodal">
+            Añadir
+          </button>
+
+          <table id="opcionestable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Tipo de Visita</th>
+                    <th>Medio de Contacto / Servicio Posventa</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="opcionesbody">
+
+            </tbody>
+            <tfoot>
+                <tr>
+                  <th>Tipo de Visita</th>
+                  <th>Medio de Contacto / Servicio Posventa</th>
+                  <th>Eliminar</th>
+                </tr>
+            </tfoot>
+          </table>
+      </div>
+    </div>
+
+    <div class="modal" id="opcionesmodal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar Opcion</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="opcionType">Tipo de Visita</label>
+              <select class="form-control" id="opcionType">
+                <option value="nuevo" selected>Nuevo</option>
+                <option value="posventa">Posventa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="opcionSubtype">Medio de Contacto / Servicio Posventa</label>
+              <input type="text" class="form-control" id="opcionSubtype" placeholder="Repuestos...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="guardaropciones" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>

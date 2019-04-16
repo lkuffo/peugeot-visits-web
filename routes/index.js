@@ -8,8 +8,29 @@ var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('opciones', { title: 'Opciones de Visita', active: "opciones" });
 });
+
+/* GET home page. */
+router.get('/opciones', function(req, res, next) {
+  res.render('opciones', { title: 'Opciones de Visita', active: "opciones"  });
+});
+
+/* GET home page. */
+router.get('/usuarios', function(req, res, next) {
+  res.render('usuarios', { title: 'Usuarios', active: "usuarios"  });
+});
+
+/* GET home page. */
+router.get('/agencias', function(req, res, next) {
+  res.render('agencias', { title: 'Agencias', active: "agencias"  });
+});
+
+/* GET home page. */
+router.get('/reportes', function(req, res, next) {
+  res.render('reportes', { title: 'Reportes', active: "reportes"  });
+});
+
 
 /**
  * Endpoint:  /login

@@ -1,13 +1,23 @@
 <header class="masthead">
     <div class="inner">
-        <a href="/institutions" class="masthead-brand-link">
-            <h3 class="masthead-brand">PEUGEOT ECUADOR | VISITAS</h3>
-        </a>
+      <a href="/" class="masthead-brand-link">
+          <h3 class="masthead-brand">PEUGEOT ECUADOR | VISITAS</h3>
+      </a>
+      <% if (typeof user === "undefined") { %>
+        <nav class="nav nav-masthead justify-content-center">
+          <a class="nav-link" href="/login" >Log In</a>
+        </nav>
+      <% } else { %>
         <nav class="nav nav-masthead justify-content-center">
           <a class="nav-link <% if(active === 'reportes') {%> active <% } %>" href="/reportes">Reportes</a>
             <a class="nav-link <% if(active === 'agencias') {%> active <% }%>" href="/agencias">Agencias</a>
             <a class="nav-link <% if(active === 'opciones') {%> active <% }%>" href="/opciones">Opciones de Visita</a>
-            <a class="nav-link <% if(active === 'usuarios') {%> active <% }%>" href="/usuarios">Usuarios</a>
+            <% if (user.type === "admin") { %>
+              <a class="nav-link <% if(active === 'usuarios') {%> active <% }%>" href="/usuarios">Usuarios</a>
+            <% } %>
+            <a class="nav-link" href="/logout"> <%= user.user %> | Logout</a>
         </nav>
+      <% } %>
+
     </div>
 </header>

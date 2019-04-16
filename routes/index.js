@@ -8,27 +8,42 @@ var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('opciones', { title: 'Opciones de Visita', active: "opciones" });
+  if (typeof req.user === "undefined"){
+    return res.render('login');
+  }
+  res.render('reportes', { title: 'Reportes', active: "reportes", user: req.user });
 });
 
 /* GET home page. */
 router.get('/opciones', function(req, res, next) {
-  res.render('opciones', { title: 'Opciones de Visita', active: "opciones"  });
+  if (typeof req.user === "undefined"){
+    return res.render('login');
+  }
+  res.render('opciones', { title: 'Opciones de Visita', active: "opciones", user: req.user  });
 });
 
 /* GET home page. */
 router.get('/usuarios', function(req, res, next) {
-  res.render('usuarios', { title: 'Usuarios', active: "usuarios"  });
+  if (typeof req.user === "undefined"){
+    return res.render('login');
+  }
+  res.render('usuarios', { title: 'Usuarios', active: "usuarios", user: req.user  });
 });
 
 /* GET home page. */
 router.get('/agencias', function(req, res, next) {
-  res.render('agencias', { title: 'Agencias', active: "agencias"  });
+  if (typeof req.user === "undefined"){
+    return res.render('login');
+  }
+  res.render('agencias', { title: 'Agencias', active: "agencias", user: req.user  });
 });
 
 /* GET home page. */
 router.get('/reportes', function(req, res, next) {
-  res.render('reportes', { title: 'Reportes', active: "reportes"  });
+  if (typeof req.user === "undefined"){
+    return res.render('login');
+  }
+  res.render('reportes', { title: 'Reportes', active: "reportes", user: req.user  });
 });
 
 
@@ -45,7 +60,7 @@ router.get('/login', function(req, res, next){
     if (typeof req.user === "undefined"){
       res.render('login', {user: req.user});
     } else {
-      res.redirect('/');
+      res.redirect('/reportes');
     }
   }
 });
@@ -70,25 +85,7 @@ router.post('/login', passport.authenticate(
  */
 router.get('/logout', function(req, res, next){
     req.logout();
-    res.redirect('/');
-});
-
-
-/**
- * Endpoint:  /
- * Method:    GET
- * Description: Render home page, sending user as parameter.
- */
-router.get('/', function(req, res, next) {
-    if (typeof (req.query.success)){
-      var operation = req.query.success;
-      if (operation == 1){
-        return res.render('index', { user: req.user, message: "Instance Added Successfully" });
-      } else if (operation == 2) {
-        return res.render('index', { user: req.user, message: "Instance Updated Successfuly" });
-      }
-    }
-    return res.render('index', { user: req.user });
+    res.redirect('/login');
 });
 
 /**

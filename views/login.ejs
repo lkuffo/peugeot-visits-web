@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
 
-    <%- include('./header.ejs') %>
+  <%- include('header.ejs') %>
 
-    <title>App Peugeot Visitas</title>
-    <meta name="description" content="Encuentra las últimas promociones y novedades acerca de vehículos Peugeot en Ecuador. Motion & Emotion. THE LION MOMENT | PEUGEOT 301">
-    <meta name="robots" content="index, follow">
-    <link rel='stylesheet' href='/stylesheets/general.css' />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
   <body>
 
-    <%- include('../gtmBody.ejs') %>
+    <body class="hm-index-body text-center" style="overflow-x: hidden">
 
-    <div class="pg-bg">
+    <div class="cover-container d-flex h-100 mx-auto flex-column">
 
+    <%- include('navbar.ejs') %>
 
-
+    <div class="modal" id="loginmodal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Iniciar Sesion</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/login" method="post">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="opcionSubtype">Usuario</label>
+                <input type="text" class="form-control" name="username" id="loginusername">
+              </div>
+              <div class="form-group">
+                <label for="opcionSubtype">Password</label>
+                <input type="password" class="form-control" name="password" id="loginpassword">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="iniciarsesionn" class="btn btn-primary">Ingresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
-
-    <%- include('../footer.ejs') %>
-
+    <%- include('footer.ejs') %>
   </body>
 </html>

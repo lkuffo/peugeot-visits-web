@@ -83,7 +83,7 @@
   font-size: 18px !important;
   width: auto;
   margin-bottom: 20px !important;
-  align-self: flex-start !important;
+  align-self: flex-start;
 }
 
 .btn-secondary{

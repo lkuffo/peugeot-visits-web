@@ -37,6 +37,9 @@ $(document).ready(function(){
     $.get("/options/", function(opciones){
       console.log(opciones);
       var data = opciones.data;
+      $("#combobox-motivo").append(`
+        <option value="TODOS" selected>TODOS</option>
+      `)
       for (var i = 0; i < data.length; i ++){
         var registro = data[i];
         $("#combobox-motivo").append(`
@@ -82,23 +85,34 @@ $(document).ready(function(){
     // MAPS GENERATION LOGIC
 
     $("#hm-filter-action").click(function(){
-        var desde = moment($("#from").val());
-        var hasta = moment($("#to").val());
+        var desde = moment($("#from").val(), "MM-DD-YYYY");
+        var hasta = moment($("#to").val(), "MM-DD-YYYY");
         var motivo = $("#combobox-motivo").val();
         var tipovisita = $("#combobox-tipovisita").val();
         $(".hm-loader-dimmer").show();
 
         $.get("/visits", function(data){
-          if (!desde && !hasta){
-            console.log("aquiii", desde);
-            var plottingData = data.data.filter(function(elem){
-              return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta) && elem.subtype === motivo && elem.type === tipovisita
-            })
+          console.log($("#from").val());
+          console.log(hasta);
+          if ($("#from").val() === "" && $("#to").val() === ""){
+            if (motivo === "TODOS" && tipovisita === "TODOS"){
+              var plottingData = data.data;
+            } else {
+              var plottingData = data.data.filter(function(elem){
+                return elem.subtype === motivo && elem.type === tipovisita
+              })
+            }
           } else {
-            console.log("aquiii");
-            var plottingData = data.data.filter(function(elem){
-              return elem.subtype === motivo && elem.type === tipovisita
-            })
+            if (motivo === "TODOS" && tipovisita === "TODOS"){
+              var plottingData = data.data.filter(function(elem){
+                return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta)
+              })
+            } else {
+              var plottingData = data.data.filter(function(elem){
+                return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta) && elem.subtype === motivo && elem.type === tipovisita
+              })
+            }
+
           }
 
           $("#totalclientes").text(plottingData.length);
@@ -110,6 +124,7 @@ $(document).ready(function(){
             var register = plottingData[i]
             label = moment(register.createdAt).format("YYYY-MM-DD")
             label2 = moment(register.createdAt).format("HH | YYYY-MM-DD")
+            console.log(label)
             label3 = register.agency;
             if (!(label in byDay)){
               byDay[label] = 0
@@ -146,7 +161,7 @@ function updateRanking(byCompany){
   $("#ranking2").empty();
   $("#ranking2").append(`<p style="font-size: 22px;">Ranking de Agencias</p>`)
   sortable.map(function(elem, index){
-    $("#ranking2").append(`<h3 style="text-align: left;"> ${index+1}: ${elem[0]} | ${elem[1]} </h3>`)
+    $("#ranking2").append(`<h4 style="text-align: left; font-size: 18px !important; "> ${index+1}: \t\t ${elem[0]} | ${elem[1]} </h4>`)
   })
 }
 
@@ -165,7 +180,7 @@ function updateByHour(byHour){
       datasets: [
         {
           data: data,
-          borderColor: "#ffcc00",
+          borderColor: "#007edb",
           fill: false
         },
       ]
@@ -194,7 +209,7 @@ function updateByDay(byDay){
       datasets: [
         {
           data: data,
-          borderColor: "#ffcc00",
+          borderColor: "#007edb",
           fill: false
         },
       ]
@@ -215,7 +230,7 @@ function chartOptions(title, y_axis, x_axis, type){
     maintainAspectRatio: false,
     title: {
       display: true,
-      text: title + ": " + y_axis,
+      text: title,
       fontSize: 20,
       fontFamily: "Roboto",
     },

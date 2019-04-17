@@ -94,12 +94,25 @@ table.dataTable.no-footer {
     border-bottom: 1px solid #ccc !important;
 }
 
+#hm-filter-action{
+  border-color: #0062c5 !important;
+  font-weight: bold !important;
+  color: #0062c5 !important;
+}
+
+#hm-filter-action:hover{
+  background-color: #0062c5 !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
 table.dataTable thead th, table.dataTable thead td{
   border-bottom: 1px solid #bbb !important;
 }
 
 .dataTables_wrapper{
   width: 100%;
+  margin-bottom: 64px !important;
 }
 
 
@@ -120,7 +133,7 @@ table.dataTable thead th, table.dataTable thead td{
 
 h1{
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .logo-image{
@@ -198,8 +211,24 @@ h1{
   }
   .nav-masthead {
     float: right;
-    display: flex;
   }
+}
+
+@media (min-width: 320px) and (max-width: 600px) {
+
+  .inner{
+    display: inherit !important;
+  }
+
+  .btn-primary{
+    color: white !important;
+    background-color: #0062c5 !important;
+    font-size: 18px !important;
+    width: auto;
+    margin-bottom: 20px !important;
+    align-self: center !important;
+  }
+
 }
 
 .nav-masthead{

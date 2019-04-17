@@ -1,5 +1,4 @@
 .hm-4box{
-  margin-left: 400px;
   display: flex;
   flex-direction: column;
 }
@@ -7,12 +6,41 @@
 .hm-col{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.form-group{
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+label{
+  text-align: left;
+}
+
+.modal-title{
+  font-weight: bold;
+}
+
+canvas{
+  width: 100% !important;
+}
+
+#combobox-tipovisita, #combobox-motivo{
+  height: 36px;
+  background-color: #f6f6f6;
+  width: 100%;
+}
+
+select{
+  padding: 4px !important;
 }
 
 .plotbox{
-  width: 50%;
+  width: 100%;
   height: 400px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   background-color: white;
   margin: 10px;
   padding: 10px;
@@ -53,10 +81,27 @@ body::after{
 }
 
 .hm-container{
-    width: 95%;
+    width: 100%;
+    padding:32px;
     align-self: center;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+table.dataTable.no-footer {
+    border-bottom: 1px solid #ccc !important;
+}
+
+table.dataTable thead th, table.dataTable thead td{
+  border-bottom: 1px solid #bbb !important;
+}
+
+.dataTables_wrapper{
+  width: 100%;
+}
+
 
 .hm-index-body{
     height: 100%;
@@ -71,6 +116,15 @@ body::after{
   justify-content: center;
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .1);
   box-shadow: inset 0 0 5rem rgba(0, 0, 0, .1);
+}
+
+h1{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.logo-image{
+  height: 100px;
 }
 
 .hm-page-title{
@@ -93,13 +147,17 @@ body::after{
   padding: 16px 32px 16px 32px;
   margin-bottom: 0px;
   color: #fff;
-  background-color: #333;
+  background-color: #223351;
   border-bottom: 2px solid #111;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .masthead-brand-link{
     color: white;
+    flex-wrap: unset;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 .masthead-brand-link:hover{
@@ -140,5 +198,11 @@ body::after{
   }
   .nav-masthead {
     float: right;
+    display: flex;
   }
+}
+
+.nav-masthead{
+  display: flex;
+  align-items: center;
 }

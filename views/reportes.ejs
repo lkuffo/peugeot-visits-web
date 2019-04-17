@@ -23,32 +23,9 @@
       <%- include('navbar.ejs') %>
       <div class="hm-container">
 
-          <h1 style="margin-top: 32px;"><%= title %></h1>
+          <h1><%= title %></h1>
 
-          <div class="hm-4box">
-            <div class="hm-col">
-              <div class="plotbox" id="plot1">
-                <canvas id="pordia" width="400" height="400"></canvas>
-              </div>
-              <div class="plotbox" id="plot2">
-                <canvas id="porhora" width="400" height="400"></canvas>
-              </div>
-            </div>
-            <div class="hm-col">
-              <div class="plotbox" id="ranking1">
-                <p style="font-size: 22px;">Cantidad total de clientes</p>
-                <h2 style="font-size: 150px;" id="totalclientes"></h2>
-              </div>
-              <div class="plotbox" id="ranking2">
-                <p style="font-size: 22px;">Ranking de Agencias</p>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="hm-healthmap-map-info" style="position: fixed;
-              z-index: 1000000;
-              top: 100px;">
+          <div class="hm-healthmap-map-info">
               <div class="hm-healthmap-selectors">
                   <h1 class="hm-page-title-u"> FILTROS </h1>
                   <div class="hm-select-date-box">
@@ -83,6 +60,27 @@
                       FILTRAR
                   </button>
               </div>
+          </div>
+
+          <div class="hm-4box" style="width: 100%;">
+            <div class="hm-col">
+              <div class="plotbox" id="plot1">
+                <canvas id="pordia" width="400" height="400"></canvas>
+              </div>
+              <div class="plotbox" id="plot2">
+                <canvas id="porhora" width="400" height="400"></canvas>
+              </div>
+            </div>
+            <div class="hm-col">
+              <div class="plotbox" id="ranking1">
+                <p style="font-size: 22px;">Cantidad total de clientes</p>
+                <h2 style="font-size: 124px;" id="totalclientes"></h2>
+              </div>
+              <div class="plotbox" id="ranking2" style="padding: 16px;">
+                <p style="font-size: 22px;">Ranking de Agencias</p>
+
+              </div>
+            </div>
           </div>
 
       </div>

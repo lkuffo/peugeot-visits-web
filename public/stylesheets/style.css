@@ -27,7 +27,7 @@ canvas{
   width: 100% !important;
 }
 
-#combobox-tipovisita, #combobox-motivo{
+#combobox-tipovisita, #combobox-motivo,  #combobox-agencia{
   height: 36px;
   background-color: #f6f6f6;
   width: 100%;
@@ -94,13 +94,13 @@ table.dataTable.no-footer {
     border-bottom: 1px solid #ccc !important;
 }
 
-#hm-filter-action{
+#hm-filter-action, #hm-donwload-excel{
   border-color: #0062c5 !important;
   font-weight: bold !important;
   color: #0062c5 !important;
 }
 
-#hm-filter-action:hover{
+#hm-filter-action:hover, #hm-donwload-excel:hover{
   background-color: #0062c5 !important;
   color: white !important;
   font-weight: bold !important;

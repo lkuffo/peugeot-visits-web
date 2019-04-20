@@ -102,4 +102,9 @@ router.get('/instance', function(req, res, next) {
     }
 });
 
+router.get('/download', function(req, res, next){
+  res.json({holi: "holi"});
+
+});
+
 module.exports = router;

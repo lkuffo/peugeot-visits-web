@@ -40,10 +40,17 @@
                   </div>
                   <div class="hm-filter-box">
                       <div class="ui-widget">
+                          <label class="hm-fields-label" for="from">Agencia</label>
+                          <select id="combobox-agencia">
+                          </select>
+                      </div>
+                  </div>
+                  <div class="hm-filter-box">
+                      <div class="ui-widget">
                           <label class="hm-fields-label" for="from">Tipo de visita</label>
                           <select id="combobox-tipovisita">
                               <option value="TODOS" selected>TODOS</option>
-                              <option value="nuevo">Vehiculo Nuevo</option>
+                              <option value="vehiculo">Vehículo</option>
                               <option value="posventa">Posventa</option>
                           </select>
                       </div>
@@ -58,7 +65,7 @@
                   <button id="hm-filter-action"
                           type="button"
                           class="hm-action-button btn btn-outline-primary btn-lg btn-block">
-                      FILTRAR
+                      VER
                   </button>
               </div>
           </div>
@@ -83,7 +90,11 @@
               </div>
             </div>
           </div>
-
+          <button id="hm-donwload-excel"
+                  type="button"
+                  class="hm-action-button btn btn-outline-primary btn-lg btn-block">
+              DESCARGAR DATOS
+          </button>
       </div>
     </div>
 

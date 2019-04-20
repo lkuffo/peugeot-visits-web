@@ -1,3 +1,6 @@
+var byDayData;
+var byHourData;
+
 $(document).ready(function(){
 
   $.get("/visits", function(data){
@@ -48,6 +51,19 @@ $(document).ready(function(){
       }
     });
 
+    $.get("/agency/", function(agencias){
+      var data = agencias.data;
+      $("#combobox-agencia").append(`
+        <option value="TODOS" selected>TODAS</option>
+      `)
+      for (var i = 0; i < data.length; i ++){
+        var registro = data[i];
+        $("#combobox-agencia").append(`
+          <option value="${registro.nombre}">${registro.nombre}</option>
+        `)
+      }
+    });
+
     var dateFormat = "mm-dd-yy";
       from = $( "#from" )
         .datepicker({
@@ -86,7 +102,8 @@ $(document).ready(function(){
 
     $("#hm-filter-action").click(function(){
         var desde = moment($("#from").val(), "MM-DD-YYYY");
-        var hasta = moment($("#to").val(), "MM-DD-YYYY");
+        var hasta = moment($("#to").val(), "MM-DD-YYYY").add(1, 'days');
+        var agencia = $("#combobox-agencia").val();
         var motivo = $("#combobox-motivo").val();
         var tipovisita = $("#combobox-tipovisita").val();
         $(".hm-loader-dimmer").show();
@@ -94,26 +111,32 @@ $(document).ready(function(){
         $.get("/visits", function(data){
           console.log($("#from").val());
           console.log(hasta);
-          if ($("#from").val() === "" && $("#to").val() === ""){
-            if (motivo === "TODOS" && tipovisita === "TODOS"){
-              var plottingData = data.data;
-            } else {
-              var plottingData = data.data.filter(function(elem){
-                return elem.subtype === motivo && elem.type === tipovisita
-              })
-            }
-          } else {
-            if (motivo === "TODOS" && tipovisita === "TODOS"){
-              var plottingData = data.data.filter(function(elem){
-                return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta)
-              })
-            } else {
-              var plottingData = data.data.filter(function(elem){
-                return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta) && elem.subtype === motivo && elem.type === tipovisita
-              })
-            }
-
-          }
+          var plottingData = data.data.filter(function(elem){
+            return (motivo === "TODOS" ? true : elem.subtype === motivo)
+              && (tipovisita === "TODOS" ? true : elem.type === tipovisita)
+              && (agencia === "TODOS" ? true : elem.agency === agencia)
+              && ($("#from").val() === "" ? true : moment(elem.createdAt).isSameOrAfter(desde))
+              && ($("#to").val() === "" ? true : moment(elem.createdAt).isSameOrBefore(hasta))
+          })
+          // if ($("#from").val() === "" && $("#to").val() === ""){
+          //   if (motivo === "TODOS" && tipovisita === "TODOS"){
+          //     var plottingData = data.data;
+          //   } else {
+          //     var plottingData = data.data.filter(function(elem){
+          //       return elem.subtype === motivo && elem.type === tipovisita
+          //     })
+          //   }
+          // } else {
+          //   if (motivo === "TODOS" && tipovisita === "TODOS"){
+          //     var plottingData = data.data.filter(function(elem){
+          //       return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta)
+          //     })
+          //   } else {
+          //     var plottingData = data.data.filter(function(elem){
+          //       return moment(elem.createdAt).isSameOrAfter(desde) && moment(elem.createdAt).isSameOrBefore(hasta) && elem.subtype === motivo && elem.type === tipovisita
+          //     })
+          //   }
+          // }
 
           $("#totalclientes").text(plottingData.length);
           var byDay = {}
@@ -172,6 +195,10 @@ function updateByHour(byHour){
     labels.push(key);
     data.push(byHour[key]);
   }
+  byHourData = {
+    labels: labels,
+    data: data
+  }
   var ctx = document.getElementById('porhora').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'line',
@@ -200,6 +227,10 @@ function updateByDay(byDay){
   for (key in byDay){
     labels.push(key);
     data.push(byDay[key]);
+  }
+  byDayData = {
+    labels: labels,
+    data: data
   }
   var ctx = document.getElementById('pordia').getContext('2d');
   var myChart = new Chart(ctx, {
@@ -266,4 +297,13 @@ function chartOptions(title, y_axis, x_axis, type){
     }
   };
   return options
+}
+
+function downloadData(){
+  $.get('/download', {
+    byDayData,
+    byHourData
+  }, (err, res)=>{
+    console.log("aqui");
+  })
 }

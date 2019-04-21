@@ -5,6 +5,11 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var passport = require('passport');
+var stream = require('stream');
+var path = require('path');
+var xlsx = require('node-xlsx');
+var fs = require('fs');
+var TARGET_PATH = path.resolve(__dirname, '../reports/');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -102,9 +107,38 @@ router.get('/instance', function(req, res, next) {
     }
 });
 
-router.get('/download', function(req, res, next){
-  res.json({holi: "holi"});
+router.post('/download', function(req, res, next){
+  const fileName = "reportes.xlsx"
+  const { byDayData, byHourData } = JSON.parse(req.body.data);
+  const byDayDataLength = (byDayData.data ? byDayData.data.length : 0)
+  const byHourDataLength = (byHourData.data ? byHourData.data.length : 0)
 
+  let dataSheet1 = []
+  dataSheet1.push(["Dia", "Visitas"])
+  for (var i = 0; i < byDayDataLength; i++){
+    dataSheet1.push([byDayData.labels[i], byDayData.data[i]]);
+  }
+  let dataSheet2 = []
+  dataSheet2.push(["Hora", "Dia", "Visitas"])
+  for (var j = 0; j < byHourDataLength; j++){
+    let label = byHourData.labels[j].split("|")
+    dataSheet2.push([label[0], label[1], byHourData.data[j]]);
+  }
+
+  var fileContents = xlsx.build([{name: "VisitasPorDia", data: dataSheet1}, {name: "VisitasPorHora", data: dataSheet2}]); // Returns a buffer
+  var savedFilePath = path.join(TARGET_PATH, fileName);
+
+  fs.writeFile(savedFilePath, fileContents, function() {
+    res.status(200).json({
+      msg: "ok"
+    })
+  });
 });
+
+router.get('/download', function(req, res, next){
+  const fileName = "reportes.xlsx"
+  var savedFilePath = path.join(TARGET_PATH, fileName);
+  res.download(savedFilePath);
+})
 
 module.exports = router;

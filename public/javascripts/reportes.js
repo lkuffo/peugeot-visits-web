@@ -3,6 +3,10 @@ var byHourData;
 
 $(document).ready(function(){
 
+  $("#hm-donwload-excel").click(function(){
+    downloadData();
+  })
+
   $.get("/visits", function(data){
     var plottingData = data.data;
 
@@ -300,10 +304,14 @@ function chartOptions(title, y_axis, x_axis, type){
 }
 
 function downloadData(){
-  $.get('/download', {
-    byDayData,
-    byHourData
+  console.log(byHourData);
+  console.log(byDayData);
+  $.post('/download', {
+    data: JSON.stringify({
+      byDayData: byDayData,
+      byHourData: byHourData
+    })
   }, (err, res)=>{
-    console.log("aqui");
+    window.open('/download');
   })
 }

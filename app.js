@@ -11,6 +11,7 @@ var users = require('./routes/users');
 var visits = require('./routes/visits');
 var options = require('./routes/options');
 var agencias = require('./routes/agencias');
+var images = require('./routes/images');
 var auth = require('./routes/auth');
 var app = express();
 
@@ -40,13 +41,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/reports', express.static(__dirname + '/reports')); 
+app.use('/reports', express.static(__dirname + '/reports'));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/visits', visits)
 app.use('/options', options);
 app.use('/agency', agencias);
+app.use('/images', images);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

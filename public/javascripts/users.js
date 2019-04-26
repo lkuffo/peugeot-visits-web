@@ -18,8 +18,8 @@ $(document).ready(function(){
       var registro = data[i];
       $("#usersbody").append(`
         <tr>
-          <td> ${registro.user} </td>
-          <td> ${registro.password} </td>
+          <td style="text-transform: lowercase !important;"> ${registro.user} </td>
+          <td style="text-transform: lowercase !important;"> ${registro.password} </td>
           <td> ${registro.type} </td>
           <td>
             <button type="button" id="${registro.user}" class="btn btn-danger btn-lg deleteuser">ELIMINAR</button>

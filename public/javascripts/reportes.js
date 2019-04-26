@@ -9,7 +9,7 @@ $(document).ready(function(){
 
   $.get("/visits", function(data){
     var plottingData = data.data;
-
+    console.log(plottingData);
     $("#totalclientes").text(plottingData.length);
     var byDay = {}
     var byHour = {}
@@ -18,6 +18,10 @@ $(document).ready(function(){
     for (var i = 0; i < plottingData.length; i++) {
       var register = plottingData[i];
       label = moment(register.createdAt).format("YYYY-MM-DD");
+      if (label === '2019-04-25'){
+        console.log("LABEL", register);
+      }
+
       label2 = moment(register.createdAt).format("HH | YYYY-MM-DD");
       label3 = register.agency;
       if (!(label in byDay)){

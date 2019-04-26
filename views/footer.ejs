@@ -9,8 +9,11 @@
 <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-<script src="/javascripts/opciones.js"></script>
-<script src="/javascripts/users.js"></script>
-<script src="/javascripts/agencias.js"></script>
-<script src="/javascripts/reportes.js"></script>
+
+<% if(typeof active !== "undefined" && active === 'reportes') {%> <script src="/javascripts/reportes.js"></script> <% } %>
+<% if(typeof active !== "undefined" && active === 'agencias') {%> <script src="/javascripts/agencias.js"></script> <% }%>
+<% if(typeof active !== "undefined" && active === 'opciones') {%> <script src="/javascripts/opciones.js"></script> <% }%>
+<% if(typeof active !== "undefined" && active === 'imagenes') {%> <script src="/javascripts/imagenes.js"></script> <% }%>
+<% if(typeof active !== "undefined" && active === 'usuarios') {%> <script src="/javascripts/users.js"></script> <% }%>"
+
 <script src="/javascripts/login.js"></script>

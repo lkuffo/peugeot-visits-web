@@ -43,6 +43,13 @@ router.get('/agencias', function(req, res, next) {
   res.render('agencias', { title: 'Agencias', active: "agencias", user: req.user  });
 });
 
+router.get('/imagenes', function(req, res, next) {
+  if (typeof req.user === "undefined"){
+    return res.render('login');
+  }
+  res.render('imagenes', { title: 'Imágenes', active: "imagenes", user: req.user  });
+});
+
 /* GET home page. */
 router.get('/reportes', function(req, res, next) {
   if (typeof req.user === "undefined"){
@@ -60,10 +67,10 @@ router.get('/reportes', function(req, res, next) {
  */
 router.get('/login', function(req, res, next){
   if (req.query.success){
-    res.render('login', { user: req.user, message: "Username or password are incorrect. Please, try again." });
+    res.render('login', { user: req.user, active: "login", message: "Username or password are incorrect. Please, try again." });
   } else {
     if (typeof req.user === "undefined"){
-      res.render('login', {user: req.user});
+      res.render('login', {user: req.user, active: "login",});
     } else {
       res.redirect('/reportes');
     }
@@ -93,19 +100,6 @@ router.get('/logout', function(req, res, next){
     res.redirect('/login');
 });
 
-/**
- * Endpoint:  /instance
- * Method:    GET
- * Description: Render add instance page if user is logged in. Otherwhise,
- * redirect to unauthorized.
- */
-router.get('/instance', function(req, res, next) {
-    if (typeof req.user === "undefined"){
-      res.render('403');
-    } else {
-      res.render('addInstance', {user: req.user});
-    }
-});
 
 router.post('/download', function(req, res, next){
   const fileName = "reportes.xlsx"

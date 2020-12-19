@@ -3,10 +3,16 @@
  */
 var mongoose = require('mongoose');
 
-mongoose.connect(`mongodb+srv://admin:peugeotLeads123@cluster0.fhm8x.mongodb.net/peugeot-visits?retryWrites=true&w=majority`);
+mongoose.connect(`mongodb+srv://admin:peugeotLeads123@cluster0.fhm8x.mongodb.net/peugeot-visits`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000
+}).catch((err) => {
+    console.log(err);
+});
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on('error', (err) => console.log(err));
 
 // Schema Modeling
 var Schema = mongoose.Schema;

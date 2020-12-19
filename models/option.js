@@ -3,7 +3,7 @@
  */
 var mongoose = require('mongoose');
 
-mongoose.connect(`mongodb://lkuffo:peugeotLeads123@ds139956.mlab.com:39956/peugeot-visits`);
+mongoose.connect(`mongodb+srv://admin:peugeotLeads123@cluster0.fhm8x.mongodb.net/peugeot-visits?retryWrites=true&w=majority`);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

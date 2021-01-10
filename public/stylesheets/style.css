@@ -47,14 +47,6 @@ select{
 }
 
 
-.shadow {
-
-}
-
-body {
-
-}
-
 a {
   color: #00B7FF;
 }
@@ -69,7 +61,7 @@ html, body{
 
 
 body::after{
-    background-color: #ccc,
+    background-color: #ccc;
     opacity: 0.15;
     content: "";
     top: 0;
@@ -98,6 +90,12 @@ table.dataTable.no-footer {
   border-color: #0062c5 !important;
   font-weight: bold !important;
   color: #0062c5 !important;
+}
+
+#hm-donwload-special-excel:hover{
+  background-color: #009688 !important;
+  color: white !important;
+  font-weight: bold !important;
 }
 
 #hm-filter-action:hover, #hm-donwload-excel:hover{

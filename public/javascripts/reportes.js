@@ -1,5 +1,24 @@
 var byDayData;
 var byHourData;
+var byAgencyData;
+var bySubtypeData;
+var byTypeData;
+var chartByDay;
+var chartByHour;
+var chartByAgency;
+var chartByType;
+var chartBySubtype1;
+var chartBySubtype2;
+
+var chartColors = [
+	'rgb(255, 99, 132)',
+	'rgb(255, 159, 64)',
+	'rgb(255, 205, 86)',
+	'rgb(75, 192, 192)',
+	'rgb(54, 162, 235)',
+	'rgb(153, 102, 255)',
+	'rgb(201, 203, 207)'
+]
 
 $(document).ready(function(){
 
@@ -7,21 +26,33 @@ $(document).ready(function(){
     downloadData();
   })
 
+  $("#hm-donwload-special-excel").click(function(){
+    downloadSpecialData();
+  })
+  var desdePivote = moment().subtract(1, 'month');
+  var hastaPivote = moment().add(1, 'days');
+  $("#from").val(desdePivote.format("MM-DD-YYYY"));
+  $("#to").val(hastaPivote.format("MM-DD-YYYY"));
+
   $.get("/visits", function(data){
-    var plottingData = data.data;
-    console.log(plottingData);
+    var plottingData = data.data.filter(function(elem){
+      return moment(elem.createdAt).isSameOrAfter(desdePivote) 
+        && moment(elem.createdAt).isSameOrBefore(hastaPivote);
+    });
     $("#totalclientes").text(plottingData.length);
     var byDay = {}
     var byHour = {}
     var byCompany = {}
+    var byAgencySpecial = {}
+    var byTypeSpecial = {}
+    var bySubtypeSpecial = {}
 
     for (var i = 0; i < plottingData.length; i++) {
       var register = plottingData[i];
-      label = moment(register.createdAt).format("YYYY-MM-DD");
-      if (label === '2019-04-25'){
-        console.log("LABEL", register);
+      if (!register.agency){
+        continue;
       }
-
+      label = moment(register.createdAt).format("YYYY-MM-DD");
       label2 = moment(register.createdAt).format("HH | YYYY-MM-DD");
       label3 = register.agency;
       if (!(label in byDay)){
@@ -30,23 +61,56 @@ $(document).ready(function(){
       if (!(label2 in byHour)){
         byHour[label2] = 0;
       }
+      if (!(label in byTypeSpecial)){
+        byTypeSpecial[label] = {}
+      }
+      if (!(label in byAgencySpecial)){
+        byAgencySpecial[label] = {}
+      }
       if (!(label3 in byCompany)){
         byCompany[label3] = 0;
       }
       byDay[label] = byDay[label] + 1;
       byHour[label2] = byHour[label2] + 1;
       byCompany[label3] = byCompany[label3] + 1;
+
+      agencyLabel = register.agency;
+      if (!(agencyLabel in byAgencySpecial[label])){
+        byAgencySpecial[label][agencyLabel] = 0;
+      }
+      byAgencySpecial[label][agencyLabel] += 1;
+
+      typeLabel = register.type;
+      if (!(typeLabel in byTypeSpecial[label])){
+        byTypeSpecial[label][typeLabel] = 0;
+      }
+      byTypeSpecial[label][typeLabel] += 1;
+
+      if (!(typeLabel in bySubtypeSpecial)){
+        bySubtypeSpecial[typeLabel] = {};
+      }
+      if (!(label in bySubtypeSpecial[typeLabel])){
+        bySubtypeSpecial[typeLabel][label] = {}
+      }
+      var subTypeLabel = register.subtype;
+      if (!(subTypeLabel in bySubtypeSpecial[typeLabel][label])){
+        bySubtypeSpecial[typeLabel][label][subTypeLabel] = 0;
+      }
+
+      bySubtypeSpecial[typeLabel][label][subTypeLabel] += 1;
     }
 
     updateByDay(byDay);
     updateByHour(byHour);
     updateRanking(byCompany);
+    updateByAgency(byAgencySpecial);
+    updateByType(byTypeSpecial);
+    updateBySubType(bySubtypeSpecial)
 
     $(".hm-loader-dimmer").hide();
   });
 
     $.get("/options/", function(opciones){
-      console.log(opciones);
       var data = opciones.data;
       $("#combobox-motivo").append(`
         <option value="TODOS" selected>TODOS</option>
@@ -117,8 +181,6 @@ $(document).ready(function(){
         $(".hm-loader-dimmer").show();
 
         $.get("/visits", function(data){
-          console.log($("#from").val());
-          console.log(hasta);
           var plottingData = data.data.filter(function(elem){
             return (motivo === "TODOS" ? true : elem.subtype === motivo)
               && (tipovisita === "TODOS" ? true : elem.type === tipovisita)
@@ -150,12 +212,17 @@ $(document).ready(function(){
           var byDay = {}
           var byHour = {}
           var byCompany = {}
+          var byAgencySpecial = {}
+          var byTypeSpecial = {}
+          var bySubtypeSpecial = {}
 
           for (var i = 0; i < plottingData.length; i++) {
             var register = plottingData[i]
+            if (!register.agency){
+              continue;
+            }
             label = moment(register.createdAt).format("YYYY-MM-DD")
             label2 = moment(register.createdAt).format("HH | YYYY-MM-DD")
-            console.log(label)
             label3 = register.agency;
             if (!(label in byDay)){
               byDay[label] = 0
@@ -166,14 +233,49 @@ $(document).ready(function(){
             if (!(label3 in byCompany)){
               byCompany[label3] = 0;
             }
+            if (!(label in byTypeSpecial)){
+              byTypeSpecial[label] = {}
+            }
+            if (!(label in byAgencySpecial)){
+              byAgencySpecial[label] = {}
+            }
             byDay[label] = byDay[label] + 1
             byHour[label2] = byHour[label2] + 1
             byCompany[label3] = byCompany[label3] + 1;
+
+            agencyLabel = register.agency;
+            if (!(agencyLabel in byAgencySpecial[label])){
+              byAgencySpecial[label][agencyLabel] = 0;
+            }
+            byAgencySpecial[label][agencyLabel] += 1;
+      
+            typeLabel = register.type;
+            if (!(typeLabel in byTypeSpecial[label])){
+              byTypeSpecial[label][typeLabel] = 0;
+            }
+            byTypeSpecial[label][typeLabel] += 1;
+      
+            if (!(typeLabel in bySubtypeSpecial)){
+              bySubtypeSpecial[typeLabel] = {};
+            }
+            if (!(label in bySubtypeSpecial[typeLabel])){
+              bySubtypeSpecial[typeLabel][label] = {}
+            }
+            var subTypeLabel = register.subtype;
+            if (!(subTypeLabel in bySubtypeSpecial[typeLabel][label])){
+              bySubtypeSpecial[typeLabel][label][subTypeLabel] = 0;
+            }
+      
+            bySubtypeSpecial[typeLabel][label][subTypeLabel] += 1;
+
           }
 
           updateByDay(byDay);
           updateByHour(byHour);
           updateRanking(byCompany);
+          updateByAgency(byAgencySpecial);
+          updateByType(byTypeSpecial);
+          updateBySubType(bySubtypeSpecial);
 
           $(".hm-loader-dimmer").hide();
         })
@@ -196,6 +298,182 @@ function updateRanking(byCompany){
   })
 }
 
+function updateByAgency(byAgency){
+  labels = [];
+  datasets = {};
+  totalDays = Object.keys(byAgency).length;
+  Object.keys(byAgency).map((key, posicion) => {
+    labels.push(key);
+    for (agencia in byAgency[key]){
+      if (!(agencia in datasets)){
+        datasets[agencia] = Array(totalDays).fill(0);
+      }
+      datasets[agencia][posicion] = byAgency[key][agencia];
+    }
+  });
+  var ctx = document.getElementById('poragencia').getContext('2d');
+  chartByAgency = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: Object.keys(datasets).map((datasetKey, i) => {
+        const dataset = datasets[datasetKey];
+        const color = chartColors[i % 7];
+        return {
+          label: datasetKey,
+          borderColor: color,
+          backgroundColor: color,
+          data: dataset,
+          fill: false
+        }
+      })
+    },
+    options: chartOptions(
+      ["Visitas por Dia por Agencia", "(da click en la leyenda para ocultar y mostrar las agencias)"],
+      "Visitas",
+      "Dia",
+      "line"
+    )
+  });
+  byAgencyData = byAgency;
+}
+
+function updateBySubType(bySubType){
+  let {
+    posventa,
+    vehiculo
+  } = bySubType
+
+  if (posventa){
+    labels1 = [];
+    datasets1 = {};
+    totalDays = Object.keys(posventa).length;
+    Object.keys(posventa).map((key, posicion) => {
+      labels1.push(key);
+      for (tipo in posventa[key]){
+        if (!(tipo in datasets1)){
+          datasets1[tipo] = Array(totalDays).fill(0);
+        }
+        datasets1[tipo][posicion] = posventa[key][tipo];
+      }
+    });
+    var ctx = document.getElementById('porsubtipo1').getContext('2d');
+    chartBySubtype1 = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels1,
+        datasets: Object.keys(datasets1).map((datasetKey, i) => {
+          const dataset = datasets1[datasetKey];
+          const color = chartColors[i % 7]
+          return {
+            label: datasetKey,
+            borderColor: color,
+            backgroundColor: color,
+            data: dataset,
+            fill: false
+          }
+        })
+      },
+      options: chartOptions(
+        "Tipo de Visitas por Posventa",
+        "Visitas",
+        "Dia",
+        "line"
+      )
+    });
+  } else {
+    if (chartBySubtype1){
+      chartBySubtype1.destroy()
+    }
+  }
+
+  if (vehiculo){
+    labels2 = [];
+    datasets2 = {};
+    totalDays = Object.keys(vehiculo).length;
+    Object.keys(vehiculo).map((key, posicion) => {
+      labels2.push(key);
+      for (tipo in vehiculo[key]){
+        if (!(tipo in datasets2)){
+          datasets2[tipo] = Array(totalDays).fill(0);
+        }
+        datasets2[tipo][posicion] = vehiculo[key][tipo];
+      }
+    });
+    var ctx = document.getElementById('porsubtipo2').getContext('2d');
+    chartBySubtype2 = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels2,
+        datasets: Object.keys(datasets2).map((datasetKey, i) => {
+          const dataset = datasets2[datasetKey];
+          const color = chartColors[i % 7]
+          return {
+            label: datasetKey,
+            borderColor: color,
+            backgroundColor: color,
+            data: dataset,
+            fill: false
+          }
+        })
+      },
+      options: chartOptions(
+        "Tipo de Visitas por Vehiculo",
+        "Visitas",
+        "Dia",
+        "line"
+      )
+    });
+  } else {
+    if (chartBySubtype2){
+      chartBySubtype2.destroy()
+    }
+  }
+
+  bySubtypeData = bySubType;
+}
+
+function updateByType(byType){
+  labels = [];
+  datasets = {};
+  totalDays = Object.keys(byType).length;
+  Object.keys(byType).map((key, posicion) => {
+    labels.push(key);
+    for (tipo in byType[key]){
+      if (!(tipo in datasets)){
+        datasets[tipo] = Array(totalDays).fill(0);
+      }
+      datasets[tipo][posicion] = byType[key][tipo];
+    }
+  });
+  var ctx = document.getElementById('portipo').getContext('2d');
+  chartByType = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: Object.keys(datasets).map((datasetKey, i) => {
+        const dataset = datasets[datasetKey];
+        const color = chartColors[i % 7]
+        return {
+          label: datasetKey,
+          borderColor: color,
+          backgroundColor: color,
+          data: dataset,
+          fill: false
+        }
+      })
+    },
+    options: chartOptions(
+      "Tipo de Visitas por Dia",
+      "Visitas",
+      "Dia",
+      "line"
+    )
+  });
+  byTypeData = byType;
+}
+
+
 function updateByHour(byHour){
   labels = [];
   data = [];
@@ -208,14 +486,15 @@ function updateByHour(byHour){
     data: data
   }
   var ctx = document.getElementById('porhora').getContext('2d');
-  var myChart = new Chart(ctx, {
+  chartByHour = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
       datasets: [
         {
           data: data,
-          borderColor: "#007edb",
+          label: 'Visitas',
+          borderColor: chartColors[Math.floor(Math.random() * chartColors.length)],
           fill: false
         },
       ]
@@ -241,14 +520,15 @@ function updateByDay(byDay){
     data: data
   }
   var ctx = document.getElementById('pordia').getContext('2d');
-  var myChart = new Chart(ctx, {
+  chartByDay = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
       datasets: [
         {
           data: data,
-          borderColor: "#007edb",
+          label: 'Visitas',
+          borderColor: chartColors[Math.floor(Math.random() * chartColors.length)],
           fill: false
         },
       ]
@@ -274,7 +554,7 @@ function chartOptions(title, y_axis, x_axis, type){
       fontFamily: "Roboto",
     },
     legend: {
-      display: false
+      display: true
     },
     scales: {
       xAxes: [{
@@ -308,14 +588,32 @@ function chartOptions(title, y_axis, x_axis, type){
 }
 
 function downloadData(){
-  console.log(byHourData);
-  console.log(byDayData);
   $.post('/download', {
     data: JSON.stringify({
       byDayData: byDayData,
       byHourData: byHourData
     })
-  }, (err, res)=>{
-    window.open('/download');
+  }, (res)=>{
+    if (res && res.fileName){
+      window.open(`/download?filename=${res.fileName}`);
+      return;
+    }
+    alert('Sucedio un error inesperado');
+  })
+}
+
+function downloadSpecialData(){
+  $.post('/download/special', {
+    data: JSON.stringify({
+      byAgencyData,
+      byTypeData,
+      bySubtypeData
+    })
+  }, (res)=>{
+    if (res && res.fileName){
+      window.open(`/download/special?filename=${res.fileName}`);
+      return;
+    }
+    alert('Sucedio un error inesperado');
   })
 }

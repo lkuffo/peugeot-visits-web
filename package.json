@@ -19,7 +19,7 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.5.1",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",

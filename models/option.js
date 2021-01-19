@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 mongoose.connect(`mongodb+srv://admin:peugeotLeads123@cluster0.fhm8x.mongodb.net/peugeot-visits`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000
+    serverSelectionTimeoutMS: 50000
 }).catch((err) => {
     console.log(err);
 });

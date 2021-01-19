@@ -1,3 +1,4 @@
+var plainData;
 var byDayData;
 var byHourData;
 var byAgencyData;
@@ -29,6 +30,11 @@ $(document).ready(function(){
   $("#hm-donwload-special-excel").click(function(){
     downloadSpecialData();
   })
+
+  $("#hm-donwload-plain-excel").click(function(){
+    downloadPlainData();
+  })
+
   var desdePivote = moment().subtract(1, 'month');
   var hastaPivote = moment().add(1, 'days');
   $("#from").val(desdePivote.format("MM-DD-YYYY"));
@@ -46,6 +52,7 @@ $(document).ready(function(){
     var byAgencySpecial = {}
     var byTypeSpecial = {}
     var bySubtypeSpecial = {}
+    plainData = plottingData;
 
     for (var i = 0; i < plottingData.length; i++) {
       var register = plottingData[i];
@@ -215,6 +222,7 @@ $(document).ready(function(){
           var byAgencySpecial = {}
           var byTypeSpecial = {}
           var bySubtypeSpecial = {}
+          plainData = plottingData;
 
           for (var i = 0; i < plottingData.length; i++) {
             var register = plottingData[i]
@@ -612,6 +620,20 @@ function downloadSpecialData(){
   }, (res)=>{
     if (res && res.fileName){
       window.open(`/download/special?filename=${res.fileName}`);
+      return;
+    }
+    alert('Sucedio un error inesperado');
+  })
+}
+
+function downloadPlainData(){
+  $.post('/download/plain', {
+    data: JSON.stringify({
+      plainData
+    })
+  }, (res)=>{
+    if (res && res.fileName){
+      window.open(`/download/plain?filename=${res.fileName}`);
       return;
     }
     alert('Sucedio un error inesperado');

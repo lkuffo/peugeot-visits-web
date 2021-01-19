@@ -132,6 +132,37 @@ router.post('/download', async function(req, res, next){
   })
 });
 
+router.post('/download/plain', async function(req, res, next){
+  const fileName = `report_plain_${Math.random().toString(36).substring(7)}.xlsx`;
+  const { plainData } = JSON.parse(req.body.data);
+  const plainDataLength = plainData.length;
+
+  let dataSheet1 = []
+  dataSheet1.push(["Agencia", "Tipo de Visita", "Motivo", "Dia", "Hora"])
+  for (var i = 0; i < plainDataLength; i++){
+    let {
+      subtype,
+      type,
+      agency,
+      createdAt
+    } = plainData[i]
+    let dia = moment(createdAt).format("YYYY-MM-DD")
+    let hora = moment(createdAt).format("HH:mm")
+    dataSheet1.push([agency, type, subtype, dia, hora]);
+  }
+
+  let wb = new ExcelJS.Workbook();
+  const ws1 = wb.addWorksheet('Visitas Crudas');
+  ws1.addRows(dataSheet1);
+  var savedFilePath = path.join(TARGET_PATH, fileName);
+  await wb.xlsx.writeFile(savedFilePath);
+
+  return res.status(200).json({
+    msg: "ok",
+    fileName
+  })
+});
+
 router.post('/download/special', async function(req, res, next){
   const fileName = `report_${Math.random().toString(36).substring(7)}.xlsx`;
   let reportBuilder = [];
@@ -318,6 +349,12 @@ router.get('/download', function(req, res, next){
 })
 
 router.get('/download/special', function(req, res, next){
+  const fileName = req.query.filename;
+  var savedFilePath = path.join(TARGET_PATH, fileName);
+  res.download(savedFilePath);
+})
+
+router.get('/download/plain', function(req, res, next){
   const fileName = req.query.filename;
   var savedFilePath = path.join(TARGET_PATH, fileName);
   res.download(savedFilePath);

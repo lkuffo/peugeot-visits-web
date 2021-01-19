@@ -98,6 +98,18 @@ table.dataTable.no-footer {
   font-weight: bold !important;
 }
 
+#hm-donwload-plain-excel{
+  border-color: #df4c4c !important;
+  color: #df4c4c !important;
+  font-weight: bold !important;
+}
+
+#hm-donwload-plain-excel:hover{
+  background-color: #df4c4c !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
 #hm-filter-action:hover, #hm-donwload-excel:hover{
   background-color: #0062c5 !important;
   color: white !important;

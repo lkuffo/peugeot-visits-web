@@ -370,7 +370,7 @@ function updateBySubType(bySubType){
     });
     var ctx = document.getElementById('porsubtipo1').getContext('2d');
     if (chartBySubtype1){
-      chartBySubtype1.detroy();
+      chartBySubtype1.destroy();
     }
     chartBySubtype1 = new Chart(ctx, {
       type: 'line',

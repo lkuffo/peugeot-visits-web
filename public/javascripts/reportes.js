@@ -320,6 +320,9 @@ function updateByAgency(byAgency){
     }
   });
   var ctx = document.getElementById('poragencia').getContext('2d');
+  if (chartByAgency){
+    chartByAgency.destroy();
+  }
   chartByAgency = new Chart(ctx, {
     type: 'line',
     data: {
@@ -366,6 +369,9 @@ function updateBySubType(bySubType){
       }
     });
     var ctx = document.getElementById('porsubtipo1').getContext('2d');
+    if (chartBySubtype1){
+      chartBySubtype1.detroy();
+    }
     chartBySubtype1 = new Chart(ctx, {
       type: 'line',
       data: {
@@ -409,6 +415,9 @@ function updateBySubType(bySubType){
       }
     });
     var ctx = document.getElementById('porsubtipo2').getContext('2d');
+    if (chartBySubtype2){
+      chartBySubtype2.destroy();
+    }
     chartBySubtype2 = new Chart(ctx, {
       type: 'line',
       data: {
@@ -455,6 +464,9 @@ function updateByType(byType){
     }
   });
   var ctx = document.getElementById('portipo').getContext('2d');
+  if (chartByType){
+    chartByType.destroy();
+  }
   chartByType = new Chart(ctx, {
     type: 'line',
     data: {
@@ -494,6 +506,9 @@ function updateByHour(byHour){
     data: data
   }
   var ctx = document.getElementById('porhora').getContext('2d');
+  if (chartByHour){
+    chartByHour.destroy();
+  }
   chartByHour = new Chart(ctx, {
     type: 'line',
     data: {
@@ -528,6 +543,9 @@ function updateByDay(byDay){
     data: data
   }
   var ctx = document.getElementById('pordia').getContext('2d');
+  if (chartByDay){
+    chartByDay.destroy();
+  }
   chartByDay = new Chart(ctx, {
     type: 'line',
     data: {

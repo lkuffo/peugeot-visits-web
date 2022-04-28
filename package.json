@@ -9,7 +9,7 @@
     "node": "12.x"
   },
   "dependencies": {
-    "async": "^2.6.2",
+    "async": "^2.6.4",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
